@@ -50,4 +50,10 @@ public class AppController {
         return mav;
     }
 
+    @RequestMapping("/delete/{id}")
+    public String deleteProduct(@PathVariable(name = "id") int id) {
+        service.delete(id);
+        return "redirect:/";
+    }
+
 }
