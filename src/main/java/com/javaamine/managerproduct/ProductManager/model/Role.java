@@ -15,6 +15,10 @@ public class Role {
         return id;
     }
 
+    public Role(String name) {
+        this.name = name;
+    }
+
     public void setId(Integer id) {
         this.id = id;
     }
