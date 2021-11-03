@@ -1,6 +1,7 @@
 package com.javaamine.managerproduct.ProductManager.model;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "roles")
@@ -14,7 +15,9 @@ public class Role {
     public Integer getId() {
         return id;
     }
+     public Role(){
 
+     }
     public Role(String name) {
         this.name = name;
     }
@@ -27,7 +30,16 @@ public class Role {
         return name;
     }
 
+
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Role{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }
