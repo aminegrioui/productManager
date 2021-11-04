@@ -114,10 +114,12 @@ public class AppController {
         user.setEnabled(true);
         user.setRoles(roles);
         userRepository.save(user);
-        Query q=en.createNativeQuery("INSERT INTO saledb.users_roles (user_id, role_id)  VALUES (?, ?)");
+       /*
+            @ManyMany adds the primary automaticly to users_roles
+       Query q=en.createNativeQuery("INSERT INTO saledb.users_roles (user_id, role_id)  VALUES (?, ?)");
         q.setParameter(1,user.getId());
-        q.setParameter(2,1);
-        q.executeUpdate();
+        q.setParameter(2,role.getId());
+        q.executeUpdate();*/
         return "register_success";
     }
 
