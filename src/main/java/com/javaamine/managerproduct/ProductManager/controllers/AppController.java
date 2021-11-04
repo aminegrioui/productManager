@@ -98,15 +98,7 @@ public class AppController {
     public String processRegister(User user) {
 
         Set<Role> roles = new HashSet<>();
-        List<Role> roleList= roleRepository.findAll();
-        Role role=null;
-        for(int i=0;i<roleList.size();i++){
-            if(roleList.get(i).getName().equals("USER")){
-                role=roleList.get(i);
-                break;  
-            }
-        }
-        System.out.println(role);
+        Role role=roleRepository.getRoleByName("USER");
         roles.add(role);
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
