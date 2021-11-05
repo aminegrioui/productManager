@@ -6,6 +6,7 @@ import com.javaamine.managerproduct.ProductManager.model.User;
 import com.javaamine.managerproduct.ProductManager.repository.RoleRepository;
 import com.javaamine.managerproduct.ProductManager.repository.UserRepository;
 import com.javaamine.managerproduct.ProductManager.services.ProductService;
+import com.javaamine.managerproduct.ProductManager.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -35,6 +36,9 @@ public class AppController {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private UserService userService;
 
     @Autowired
     private RoleRepository roleRepository;
@@ -119,6 +123,17 @@ public class AppController {
         q.executeUpdate();*/
         return "register_success";
     }
+
+    @GetMapping("/configure")
+    public String getAllUsers(Model model){
+        boolean enable=true;
+        List<User> users=userService.getAllUsers();
+        model.addAttribute("users",users);
+        model.addAttribute("index",enable);
+        return "administration";
+    }
+
+
 
 
 }

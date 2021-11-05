@@ -18,6 +18,7 @@
     </div>
     <h1>Product List</h1>
     <a sec:authorize="hasAnyAuthority('CREATOR', 'ADMIN')" href="/new">Create New Product</a>
+    <a sec:authorize="hasAnyAuthority('ADMIN')" href="/configure">Administration</a>
     <br/><br/>
     <table border="1" cellpadding="10">
         <thead>
