@@ -3,14 +3,17 @@
 <head>
   <meta charset="ISO-8859-1">
   <title>Sign Up - CodeJava</title>
-  <link rel="stylesheet" type="text/css" href="/webjars/bootstrap/css/bootstrap.min.css" />
-  <script type="text/javascript" src="/webjars/jquery/jquery.min.js"></script>
-  <script type="text/javascript" src="/webjars/bootstrap/js/bootstrap.min.js"></script>
+
+  <link th:rel="stylesheet" th:href="@{assets/bootstrap4-toggle/bootstrap4-toggle.min.css}"/>
+  <link th:rel="stylesheet" th:href="@{webjars/bootstrap/4.0.0-2/css/bootstrap.min.css} "/>
 </head>
 <body>
 <div class="container text-center">
   <div>
     <h1>User Registration - Sign Up</h1>
+  </div>
+  <div  class="alert alert-danger">
+    <span th:if="${errorMessage}"  th:text="${errorMessage}">Error</span>
   </div>
   <form th:action="@{/process_register}" th:object="${user}"
         method="post" style="max-width: 600px; margin: 0 auto;">

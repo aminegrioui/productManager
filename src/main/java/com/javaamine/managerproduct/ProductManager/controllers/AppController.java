@@ -78,27 +78,32 @@ public class AppController {
     }
 
     @GetMapping("/403")
-    public String error403(){
+    public String error403() {
         return "403";
     }
+
     @GetMapping("/login")
-    public String home(){
+    public String home() {
         return "login";
     }
 
     @GetMapping("/register")
     public String showRegistrationForm(Model model) {
-        model.addAttribute("user", new User());
-
+        User user = new User();
+        model.addAttribute("user", user);
         return "signup_form";
     }
 
     @PostMapping("/process_register")
     @Transactional
-    public String processRegister(User user) {
-
+    public String processRegister(User user,Model model) {
+        if(userRepository.getUserByUsername(user.getUsername())!=null){
+            model.addAttribute("errorMessage","Login Failed");
+            System.out.println("Error");
+            return "signup_form";
+        }
         Set<Role> roles = new HashSet<>();
-        Role role=roleRepository.getRoleByName("USER");
+        Role role = roleRepository.getRoleByName("USER");
         roles.add(role);
         BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
         String encodedPassword = passwordEncoder.encode(user.getPassword());
@@ -114,7 +119,6 @@ public class AppController {
         q.executeUpdate();*/
         return "register_success";
     }
-
 
 
 }
