@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8" />
+    <title>Create New Employee</title>
+</head>
+<body>
+<div align="center">
+    <h1>Create New Employee</h1>
+    <br />
+    <form action="#" th:action="@{/configure/save}" method="post" th:object="${role}">
+
+        <table border="0" cellpadding="10">
+
+            <tr>
+                <td>Role:</td>
+                <td><select th:field="*{name}">
+                    <option th:value="'USER'" th:text="USER"></option>
+                    <option th:value="'ADMIN'" th:text="ADMIN"></option>
+                    <option th:value="'CREATOR'" th:text="CREATOR"></option>
+                    <option th:value="'EDITOR'" th:text="EDITOR"></option>
+                </select></td>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="2"><button type="submit">Save</button> </td>
+            </tr>
+        </table>
+    </form>
+</div>
+</body>
+</html>

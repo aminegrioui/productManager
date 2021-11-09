@@ -9,7 +9,7 @@
 <body>
 <div align="center">
     <div sec:authorize="isAuthenticated()">
-        Welcome <b><span sec:authentication="name">Password</span></b>
+        Welcome <b><span sec:authentication="name">Name</span></b>
         &nbsp;
         <i><span sec:authentication="principal.authorities">Roles</span></i> &nbsp;
         <form th:action="@{/logout}" method="post">
@@ -19,13 +19,14 @@
     <h1>User List</h1>
     <a sec:authorize="hasAnyAuthority('ADMIN')" href="/configure">Employees</a>
     <a sec:authorize="hasAnyAuthority('ADMIN')" href="/configure">Administration</a>
-    <a sec:authorize="hasAnyAuthority('ADMIN')" href="/addProducts">Add Products</a>
+    <a sec:authorize="hasAnyAuthority('ADMIN')" href="/configure/newEmployee">Add Employees</a>
     <br/><br/>
     <table border="1" cellpadding="10">
         <thead>
         <tr>
             <th>User ID</th>
             <th>Username</th>
+            <th>Password</th>
             <th>Enabled</th>
             <th>Roles</th>
             <th sec:authorize="hasAnyAuthority('ADMIN')">Actions</th>
@@ -35,12 +36,13 @@
         <tr th:each="user : ${users}">
             <td th:text="${user.id}">User ID</td>
             <td th:text="${user.username}">Username</td>
+            <td th:text="${user.password}">Password</td>
             <td th:text="${user.enabled}">Enabled</td>
             <td th:text="${user.roles}">Made in</td>
             <td sec:authorize="hasAnyAuthority('ADMIN')">
-                <a th:href="@{'/edit/' + ${user.id}}">Edit</a>
+                <a sec:authorize="hasAnyAuthority('ADMIN')" th:href="@{'/configure/edit/' + ${user.id}}">Edit</a>
                 &nbsp;&nbsp;&nbsp;
-                <a sec:authorize="hasAnyAuthority('ADMIN')" th:href="@{'/delete/' + ${user.id}}">Delete</a>
+                <a sec:authorize="hasAnyAuthority('ADMIN')" th:href="@{'/configure/delete/' + ${user.id}}">Delete</a>
             </td>
         </tr>
         </tbody>
