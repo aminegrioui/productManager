@@ -100,9 +100,9 @@ public class AppController {
 
     @PostMapping("/process_register")
     @Transactional
-    public String processRegister(User user,Model model) {
-        if(userRepository.getUserByUsername(user.getUsername())!=null){
-            model.addAttribute("errorMessage","Login Failed");
+    public String processRegister(User user, Model model) {
+        if (userRepository.getUserByUsername(user.getUsername()) != null) {
+            model.addAttribute("errorMessage", "Login Failed");
             return "signup_form";
         }
         Set<Role> roles = new HashSet<>();
@@ -124,38 +124,40 @@ public class AppController {
     }
 
     @GetMapping("/configure")
-    public String getAllUsers(Model model){
-        boolean enable=true;
-        List<User> usersEmployees=userService.getEmployeesOfWeb();
-        List<User> users=userService.getAllUsers();
+    public String getAllUsers(Model model) {
+        boolean enable = true;
+        List<User> usersEmployees = userService.getEmployeesOfWeb();
+        List<User> users = userService.getAllUsers();
        /* if(true){
             model.addAttribute("usersEmployees",usersEmployees);
         }
        else{
 
         }*/
-        model.addAttribute("users",users);
-        model.addAttribute("index",enable);
+        model.addAttribute("users", users);
+        model.addAttribute("index", enable);
         return "administration";
     }
 
     @GetMapping("/configure/newEmployee")
     public String showNewEmployeePage(Model model) {
-        Role role=new Role();
+        Role role = new Role();
         model.addAttribute("role", role);
         return "new_employee";
     }
+
     @PostMapping("/configure/save")
     public String saveNewEmployee(@ModelAttribute("role") Role role) {
         System.out.println(role);
         userService.saveUser(role);
         return "redirect:/configure";
     }
+
     @PostMapping("/configure/edit")
-    public String editEmployee(@ModelAttribute("user") User user,@ModelAttribute("role")  Role role) {
+    public String editEmployee(@ModelAttribute("user") User user, @ModelAttribute("role") Role role) {
         System.out.println(user.getUsername());
         System.out.println(role);
-      //  userService.editUser(user,role);
+        //  userService.editUser(user,role);
         return "redirect:/configure";
     }
 
@@ -170,9 +172,38 @@ public class AppController {
     }
 
     @RequestMapping("/configure/delete/{id}")
-    public String deleteUserOrEmployee(@PathVariable(name = "id") Long id){
+    public String deleteUserOrEmployee(@PathVariable(name = "id") Long id) {
         userService.deleteUser(id);
         return "redirect:/configure";
     }
+
+    @RequestMapping("/changePasswordPage")
+    public String changePasswordPage(Model model) {
+        User user = new User();
+        model.addAttribute("user", user);
+
+        return "forget_password";
+    }
+
+    @RequestMapping(value = "/changePassword", method = RequestMethod.POST)
+    public String editPassword(@ModelAttribute("user")  User user, Model model) {
+        User userDb = userRepository.getUserByUsername(user.getUsername());
+
+
+
+        if (userDb == null) {
+            model.addAttribute("usernameNotFound", "This username is not found !! try again");
+            return "forget_password";
+        }
+        logger.info(user.toString());
+        logger.info(userDb.toString());
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        userDb.setPassword(encodedPassword);
+        logger.info(userDb.toString());
+        userRepository.save(userDb);
+        return "redirect: /login";
+    }
+
 
 }
