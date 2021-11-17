@@ -128,12 +128,6 @@ public class AppController {
         boolean enable = true;
         List<User> usersEmployees = userService.getEmployeesOfWeb();
         List<User> users = userService.getAllUsers();
-       /* if(true){
-            model.addAttribute("usersEmployees",usersEmployees);
-        }
-       else{
-
-        }*/
         model.addAttribute("users", users);
         model.addAttribute("index", enable);
         return "administration";
@@ -147,10 +141,28 @@ public class AppController {
     }
 
     @PostMapping("/configure/save")
-    public String saveNewEmployee(@ModelAttribute("role") Role role) {
+    public String saveNewEmployee(@ModelAttribute("role") Role role,Model model) {
         System.out.println(role);
-        userService.saveUser(role);
-        return "redirect:/configure";
+        User user=userService.saveUser(role);
+        logger.info("user /configure/save "+user.getId());
+        model.addAttribute("user",user);
+        return "reset_password_username";
+    }
+
+    @PostMapping("/configure/resetUsernameAndPassword")
+    public String resetUserNameAndPassword(User user,Model model) {
+        logger.info("/configure/resetUsernameAndPassword "+ user);
+        if (userRepository.getUserByUsername(user.getUsername()) != null) {
+            model.addAttribute("errorMessage", "This username is already used");
+            return "reset_password_username";
+        }
+        User userDb=userRepository.getById(user.getId());
+        userDb.setUsername(user.getUsername());
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        String encodedPassword = passwordEncoder.encode(user.getPassword());
+        userDb.setPassword(encodedPassword);
+        userRepository.save(userDb);
+        return "redirect:/login";
     }
 
     @PostMapping("/configure/edit")
